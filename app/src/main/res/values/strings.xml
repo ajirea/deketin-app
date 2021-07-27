@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Deketin</string>
+    <string name="cat_akuntan">Akuntan</string>
+    <string name="cat_atm">ATM</string>
+    <string name="cat_balai_kota">Balai Kota</string>
+    <string name="cat_bengkel_mobil">Bengkel Mobil</string>
+    <string name="cat_bandara">Bandara</string>
+</resources>

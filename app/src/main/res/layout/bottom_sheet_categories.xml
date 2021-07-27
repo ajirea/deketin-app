@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheetCategories"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/topBorder"
+        android:layout_width="56dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_dialog_bottom_border" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/searchField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/edittext_search"
+        android:drawableEnd="@drawable/ic_baseline_search_24"
+        android:hint="Pencarian"
+        android:padding="16dp" />
+
+    <GridView
+        android:id="@+id/categoriesMenuGridView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:numColumns="4"
+        android:columnWidth="70dp"
+        android:layout_margin="16dp"
+        android:horizontalSpacing="16dp"
+        android:verticalSpacing="16dp"
+        android:clipChildren="false"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="true"
+        android:nestedScrollingEnabled="true"
+        >
+    </GridView>
+</LinearLayout>
