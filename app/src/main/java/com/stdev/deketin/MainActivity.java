@@ -2,6 +2,7 @@ package com.stdev.deketin;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -45,11 +46,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
 
         // event for showing bottom sheet category
-        binding.searchNearestPlace.setOnClickListener(new View.OnClickListener() {
+        binding.searchNearestPlace.setOnClickListener(showBottomSheet);
+        binding.catAll.setOnClickListener(showBottomSheet);
+
+        binding.visitHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CategoryBottomSheetDialog dialog = new CategoryBottomSheetDialog();
-                dialog.show(getSupportFragmentManager(), "CategoryBottomSheetDialog");
+                Intent intent = new Intent(MainActivity.this, VisitHistoryActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -65,4 +69,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
         recommendedPlacesAdapter.notifyDataSetChanged();
         lastVisitedPlacesAdapter.notifyDataSetChanged();
     }
+
+    private View.OnClickListener showBottomSheet = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            CategoryBottomSheetDialog dialog = new CategoryBottomSheetDialog();
+            dialog.show(getSupportFragmentManager(), "CategoryBottomSheetDialog");
+        }
+    };
 }

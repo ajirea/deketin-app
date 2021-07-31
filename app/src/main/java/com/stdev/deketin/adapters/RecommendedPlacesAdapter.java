@@ -1,5 +1,7 @@
 package com.stdev.deketin.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
+import com.stdev.deketin.PlaceDetailActivity;
 import com.stdev.deketin.R;
 import com.stdev.deketin.databinding.PlaceItemBinding;
 import com.stdev.deketin.models.PlaceModel;
@@ -50,6 +53,13 @@ public class RecommendedPlacesAdapter extends RecyclerView.Adapter<RecommendedPl
         public RecommendedPlacesViewHolder(@NonNull View itemView) {
             super(itemView);
             binding = PlaceItemBinding.bind(itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(itemView.getContext(), PlaceDetailActivity.class);
+                    itemView.getContext().startActivity(intent);
+                }
+            });
         }
 
         public void setItemData(PlaceModel data) {
@@ -57,7 +67,7 @@ public class RecommendedPlacesAdapter extends RecyclerView.Adapter<RecommendedPl
             binding.placeDistance.setText(String.valueOf(data.getDistance()));
             Picasso.get()
                     .load(data.getThumbnail())
-                    .placeholder(R.drawable.img_tools_hospital)
+                    .placeholder(R.drawable.bg_skeleton)
                     .into(binding.thumbnail);
         }
     }

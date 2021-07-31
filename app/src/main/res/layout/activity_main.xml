@@ -20,13 +20,12 @@
             android:orientation="horizontal"
             android:padding="16dp">
 
-            <ImageButton
-                android:id="@+id/btnMenu"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_menu_24"
-                android:theme="@style/Widget.AppCompat.Toolbar.Button.Navigation" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Theme.Deketin.TextMedium20"
+                android:text="@string/app_name"
+                android:textColor="@color/grey_900"/>
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/linearLayoutCompat"
@@ -102,12 +101,25 @@
 
                     <Button
                         android:id="@+id/searchNearestPlace"
-                        style="@style/Theme.Deketin.TextBold12"
+                        style="@style/Theme.Deketin.TextBold14"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/btn_primary_light"
                         android:elevation="0dp"
-                        android:text="Cari Tempat Terdekat"
+                        android:stateListAnimator="@null"
+                        android:text="@string/text_search_nearest_places"
+                        android:textAllCaps="false"
+                        android:textColor="@drawable/btn_color_light" />
+                    <Button
+                        android:id="@+id/visitHistory"
+                        style="@style/Theme.Deketin.TextBold14"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/btn_primary_light"
+                        android:elevation="0dp"
+                        android:stateListAnimator="@null"
+                        android:text="@string/visit_history"
                         android:textAllCaps="false"
                         android:textColor="@drawable/btn_color_light" />
                 </LinearLayout>
@@ -120,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginBottom="16dp"
-                android:text="kategori Tempat"
+                android:text="@string/place_category"
                 android:textColor="@color/grey_900" />
 
             <GridLayout
@@ -134,6 +146,10 @@
                 android:rowCount="1">
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/catAll"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:rippleColor="@color/grey_50"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_rowWeight="1"
@@ -165,13 +181,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="6dp"
-                            android:breakStrategy="simple"
-                            android:text="Semuanya"
+                            android:text="@string/cat_all"
                             android:textAlignment="center" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/catHospital"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:rippleColor="@color/grey_50"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_rowWeight="1"
@@ -196,20 +215,23 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginBottom="6dp"
-                            android:src="@drawable/ic_all_category" />
+                            android:src="@drawable/ic_cat_hospital" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             style="@style/Theme.Deketin.TextMedium10"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="6dp"
-                            android:breakStrategy="simple"
-                            android:text="Semuanya"
+                            android:text="@string/text_hospital"
                             android:textAlignment="center" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/catSchool"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:rippleColor="@color/grey_50"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_rowWeight="1"
@@ -234,20 +256,23 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginBottom="6dp"
-                            android:src="@drawable/ic_all_category" />
+                            android:src="@drawable/ic_cat_school" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             style="@style/Theme.Deketin.TextMedium10"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="6dp"
-                            android:breakStrategy="simple"
-                            android:text="Semuanya"
+                            android:text="@string/cat_sekolah"
                             android:textAlignment="center" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/catRestaurant"
+                    android:clickable="true"
+                    android:focusable="true"
+                    app:rippleColor="@color/grey_50"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_rowWeight="1"
@@ -272,15 +297,14 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginBottom="6dp"
-                            android:src="@drawable/ic_all_category" />
+                            android:src="@drawable/ic_cat_restaurant" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             style="@style/Theme.Deketin.TextMedium10"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="6dp"
-                            android:breakStrategy="simple"
-                            android:text="Semuanya"
+                            android:text="@string/cat_restaurant"
                             android:textAlignment="center" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
@@ -293,7 +317,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginBottom="16dp"
-                android:text="Rekomendasi Tempat"
+                android:text="@string/place_recommendation"
                 android:textColor="@color/grey_900" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -319,7 +343,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:text="Terakhir Dikunjungi"
+                    android:text="@string/last_visited"
                     android:textColor="@color/grey_900" />
 
                 <TextView
@@ -330,8 +354,9 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="16dp"
                     android:clickable="true"
-                    android:text="Lihat Semua"
-                    android:textColor="?attr/colorPrimary" />
+                    android:text="@string/view_more"
+                    android:textColor="?attr/colorPrimary"
+                    android:focusable="true" />
             </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView

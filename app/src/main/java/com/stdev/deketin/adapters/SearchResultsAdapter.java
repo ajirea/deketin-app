@@ -67,7 +67,7 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             binding.placeDistance.setText(String.valueOf(data.getDistance()));
             Picasso.get()
                     .load(data.getThumbnail())
-                    .placeholder(R.drawable.img_tools_hospital)
+                    .placeholder(R.drawable.bg_skeleton)
                     .into(binding.thumbnail);
         }
     }

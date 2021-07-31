@@ -7,6 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="green_400">#12D176</color>
+    <color name="green_op_20">#3312D176</color>
     <color name="orange_500">#FF5722</color>
     <color name="orange_700">#ea4c17</color>
     <color name="orange_900">#c33709</color>
@@ -15,6 +17,8 @@
     <color name="grey_700">#737373</color>
     <color name="grey_500">#b2b2b2</color>
     <color name="grey_50">#fafafa</color>
+    <color name="grey_40">#f5f5f5</color>
     <color name="black_op_8">#14212121</color>
     <color name="black_op_60">#99000000</color>
+    <color name="black_op_78">#c6000000</color>
 </resources>

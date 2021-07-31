@@ -4,6 +4,8 @@ public class PlaceModel {
     private String placeName;
     private double distance;
     private String thumbnail;
+    private String address;
+    private String date;
 
     public String getPlaceName() {
         return placeName;
@@ -27,5 +29,21 @@ public class PlaceModel {
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

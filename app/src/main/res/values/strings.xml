@@ -5,4 +5,18 @@
     <string name="cat_balai_kota">Balai Kota</string>
     <string name="cat_bengkel_mobil">Bengkel Mobil</string>
     <string name="cat_bandara">Bandara</string>
+    <string name="dummy_text">Sed ornare aliquam erat, eget molestie lorem sodales in. Phasellus sit amet est sed neque lacinia commodo. Sed eu magna nec odio tincidunt dignissim non et lacus. Nulla facilisi. Sed id diam sit amet urna vestibulum auctor a ac lacus. Cras rutrum mattis viverra. Proin at tincidunt odio, sed efficitur ligula. In eu purus facilisis, ultricies nulla vitae, consectetur metus. Nulla tristique quam at dignissim semper. In hac habitasse platea dictumst. Nulla varius metus velit, vel tempor elit dignissim vel. Nullam condimentum lectus leo, sit amet pharetra eros lacinia a. In hac habitasse platea dictumst.\nNulla porta, dolor eu pretium lobortis, libero orci volutpat dui, sit amet placerat mauris dolor ac turpis. Duis vitae tincidunt erat. Nunc cursus et velit tristique ullamcorper. Donec fermentum semper lacus et ullamcorper. Cras non lorem lobortis, condimentum ante tempor, aliquam dolor. Sed finibus blandit quam, nec iaculis odio commodo vitae. Phasellus viverra quam id diam dapibus euismod. Praesent dictum mauris quis justo dapibus commodo. Cras quis luctus elit. Nunc semper arcu vel venenatis hendrerit.\nQuisque non ultrices ante, id tristique massa. Nam sed mi dui. Phasellus nec sem vitae erat consectetur lacinia eget nec tellus. Ut pharetra tristique tincidunt. Sed at vehicula lacus, nec efficitur orci. Sed eu leo a tortor laoreet luctus quis ac est. Aliquam at lacus venenatis, hendrerit nisi ac, finibus nisi.</string>
+    <string name="desc_direction">Direction</string>
+    <string name="desc_foto_tempat">Foto Tempat</string>
+    <string name="cat_sekolah">Sekolah</string>
+    <string name="cat_all">Semuanya</string>
+    <string name="text_hospital">Rumah Sakit</string>
+    <string name="cat_restaurant">Restoran</string>
+    <string name="text_search_nearest_places">Cari Tempat Terdekat</string>
+    <string name="place_category">kategori Tempat</string>
+    <string name="place_recommendation">Rekomendasi Tempat</string>
+    <string name="last_visited">Terakhir Dikunjungi</string>
+    <string name="view_more">Lihat Semua</string>
+    <string name="visit_history">Riwayat Kunjungan</string>
+    <string name="search">Pencarian</string>
 </resources>

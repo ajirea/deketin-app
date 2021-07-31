@@ -82,4 +82,11 @@
         <item name="android:colorControlNormal">?attr/colorPrimary</item>
     </style>
 
+    <style name="Theme.Deketin.TextApperance.ActionBarTitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+
 </resources>

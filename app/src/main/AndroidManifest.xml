@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Deketin">
-        <activity android:name=".PlaceDetailActivity"></activity>
+        <activity android:name=".VisitHistoryActivity"></activity>
+        <activity android:name=".PlaceDetailActivity" />
         <activity android:name=".SearchResultsActivity" />
         <activity
             android:name=".MainActivity"
