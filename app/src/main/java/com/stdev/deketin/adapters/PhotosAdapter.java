@@ -16,12 +16,13 @@ import com.stdev.deketin.databinding.PhotoItemBinding;
 import com.stdev.deketin.databinding.PlaceItemBinding;
 import com.stdev.deketin.models.PlaceModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder> {
-    private final String[] photos;
+    private final ArrayList<String> photos;
 
-    public PhotosAdapter(String[] photos) {
+    public PhotosAdapter(ArrayList<String> photos) {
         this.photos = photos;
     }
 
@@ -39,12 +40,12 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.setItemData(photos[position]);
+        holder.setItemData(photos.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return photos.length;
+        return photos.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

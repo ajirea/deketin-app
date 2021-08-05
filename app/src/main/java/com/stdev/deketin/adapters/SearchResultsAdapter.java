@@ -1,5 +1,8 @@
 package com.stdev.deketin.adapters;
 
+import android.annotation.SuppressLint;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 import com.stdev.deketin.R;
 import com.stdev.deketin.databinding.PlaceItemBinding;
+import com.stdev.deketin.models.PhotoModel;
 import com.stdev.deketin.models.PlaceModel;
 
 import java.util.List;
@@ -51,24 +55,34 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
             super(itemView);
             binding = PlaceItemBinding.bind(itemView);
             float dpRatio = itemView.getResources().getDisplayMetrics().density;
-            int margin = (int) (8F*dpRatio);
+            int margin = (int) (8 * dpRatio);
 
             ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) itemView.getLayoutParams();
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            layoutParams.setMargins(margin, margin, margin,margin);
+            layoutParams.setMargins(margin, margin, margin, margin);
             itemView.setLayoutParams(layoutParams);
 
-            binding.placeName.setMaxWidth((int)(110*dpRatio));
-            binding.placeName.setMaxLines(2);
+//            binding.placeName.setMaxWidth((int) (90 * dpRatio));
+//            binding.placeName.setMaxLines(2);
+//            binding.placeName.setEllipsize(TextUtils.TruncateAt.END);
         }
 
+        @SuppressLint("DefaultLocale")
         public void setItemData(PlaceModel data) {
             binding.placeName.setText(data.getPlaceName());
-            binding.placeDistance.setText(String.valueOf(data.getDistance()));
-            Picasso.get()
-                    .load(data.getThumbnail())
-                    .placeholder(R.drawable.bg_skeleton)
-                    .into(binding.thumbnail);
+            binding.placeDistance.setText(String.format("%.1fkm", data.getDistance()/1000));
+
+            if (data.getPhotos() != null && data.getPhotos().length > 0) {
+                PhotoModel photo = data.getPhotos()[0];
+                photo.setMaxWidth(320);
+
+                Picasso.get()
+                        .load(photo.getPhotoUrl())
+                        .placeholder(R.drawable.bg_skeleton)
+                        .into(binding.thumbnail);
+            } else {
+                binding.thumbnail.setImageResource(R.drawable.bg_no_image);
+            }
         }
     }
 }

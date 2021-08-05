@@ -20,14 +20,22 @@ public class CategoriesGridAdapter extends BaseAdapter {
     private MenuItemBinding binding;
     private Context context;
     private String[] menuText;
+    private String[] types;
     private int[] icons;
 
     public CategoriesGridAdapter(Context context) {
         this.context = context;
 
         menuText = new String[]{"Akuntan", "ATM", "Balai Kota", "Bengkel Mobil", "Bandara", "Tempat Camping",
-            "Dealer Mobil", "Galeri Seni", "Gereja", "Hotel", "Kafe", "Masjid", "Polisi", "Pemakaman", "Rental Mobil",
-            "Restoran", "Rumah Sakit", "Salon", "Sekolah", "Steam Mobil", "Taman Hiburan", "Terminal Bus", "Toko Buku", "Warung"};
+                "Dealer Mobil", "Galeri Seni", "Gereja", "Hotel", "Kafe", "Masjid", "Polisi", "Pemakaman", "Rental Mobil",
+                "Restoran", "Rumah Sakit", "Salon", "Sekolah", "Steam Mobil", "Taman Hiburan", "Terminal Bus", "Toko Buku", "Warung"};
+
+        types = new String[]{
+                "accounting", "atm", "city_hall", "car_repair", "airport", "campground",
+                "car_dealer", "art_gallery", "church", "lodging", "cafe", "mosque", "police",
+                "cemetry", "car_rental", "restaurant", "hospital", "beauty_salon", "school",
+                "car_wash", "amusement_park", "bus_station", "book_store", "convenience_store",
+        };
 
         icons = new int[]{
                 R.drawable.ic_cat_accountant, R.drawable.ic_cat_atm, R.drawable.ic_cat_city_hall,
@@ -36,8 +44,8 @@ public class CategoriesGridAdapter extends BaseAdapter {
                 R.drawable.ic_cat_hotel, R.drawable.ic_cat_cafe, R.drawable.ic_cat_mosque, R.drawable.ic_cat_police,
                 R.drawable.ic_cat_cemetery, R.drawable.ic_cat_car_rental, R.drawable.ic_cat_restaurant,
                 R.drawable.ic_cat_hospital, R.drawable.ic_cat_beauty_salon, R.drawable.ic_cat_school,
-                R.drawable.ic_cat_car_wash, R.drawable.ic_cat_amusement_park, R.drawable.ic_cat_book_store,
-                R.drawable.ic_cat_bus_station, R.drawable.ic_cat_store
+                R.drawable.ic_cat_car_wash, R.drawable.ic_cat_amusement_park, R.drawable.ic_cat_bus_station,
+                R.drawable.ic_cat_book_store, R.drawable.ic_cat_store
         };
     }
 
@@ -58,7 +66,7 @@ public class CategoriesGridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater  layoutInflater =  (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.menu_item, null);
         binding = MenuItemBinding.bind(view);
 
@@ -68,8 +76,12 @@ public class CategoriesGridAdapter extends BaseAdapter {
         binding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("category_clicked", menuText[position] + " Clicked");
+                String keyword = menuText[position];
+                String type = types[position];
+
                 Intent intent = new Intent(context, SearchResultsActivity.class);
+                intent.putExtra("keyword", keyword);
+                intent.putExtra("type", type);
                 context.startActivity(intent);
             }
         });

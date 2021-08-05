@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        style="@style/Theme.Deketin.TextBold16"
+        android:textSize="18sp"
+        android:textColor="@color/grey_800"
+        android:text="Perbarui Lokasi"
+        android:paddingHorizontal="24dp"
+        android:gravity="center_vertical"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey_50"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kp. Selakopi, RT 02/011, Ds. Cijengkol, Kec. Caringin, Kab. Sukabumi"
+            android:textColor="@color/grey_700"
+            android:lineSpacingExtra="5dp"
+            style="@style/Theme.Deketin.TextRegular16"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button"
+            android:layout_marginTop="16dp"
+            app:cardBackgroundColor="?attr/colorPrimary"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp"
+            android:stateListAnimator="@null"
+            app:cardUseCompatPadding="false"
+            app:rippleColor="@color/grey_50">
+            <TextView
+                android:id="@+id/textUpdate"
+                style="@style/Theme.Deketin.TextBold14"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="16dp"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:text="@string/update"
+                android:textColor="@color/white"/>
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/indicatorUpdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:indeterminate="true"
+                app:indicatorColor="@color/white"
+                app:trackColor="?attr/colorPrimaryVariant"
+                app:indicatorSize="32dp"/>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</LinearLayout>

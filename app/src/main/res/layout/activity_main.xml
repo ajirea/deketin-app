@@ -21,17 +21,19 @@
             android:padding="16dp">
 
             <TextView
+                style="@style/Theme.Deketin.TextMedium20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Theme.Deketin.TextMedium20"
                 android:text="@string/app_name"
-                android:textColor="@color/grey_900"/>
+                android:textColor="@color/grey_900" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/linearLayoutCompat"
+                android:id="@+id/currentLocation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:clickable="true"
+                android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -40,8 +42,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:clickable="true"
-                    android:focusable="true"
                     android:text="Sukabumi, Jawa Barat"
                     android:textColor="@color/grey_700" />
 
@@ -110,6 +110,7 @@
                         android:text="@string/text_search_nearest_places"
                         android:textAllCaps="false"
                         android:textColor="@drawable/btn_color_light" />
+
                     <Button
                         android:id="@+id/visitHistory"
                         style="@style/Theme.Deketin.TextBold14"
@@ -147,9 +148,6 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/catAll"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:rippleColor="@color/grey_50"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_rowWeight="1"
@@ -157,9 +155,12 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:background="@drawable/bg_category_item"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="0dp"
                     app:cardUseCompatPadding="false"
+                    app:rippleColor="@color/grey_50"
                     app:strokeColor="@color/grey_50"
                     app:strokeWidth="1dp">
 
@@ -188,9 +189,6 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/catHospital"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:rippleColor="@color/grey_50"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_rowWeight="1"
@@ -198,9 +196,12 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:background="@drawable/bg_category_item"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="0dp"
                     app:cardUseCompatPadding="false"
+                    app:rippleColor="@color/grey_50"
                     app:strokeColor="@color/grey_50"
                     app:strokeWidth="1dp">
 
@@ -229,9 +230,6 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/catSchool"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:rippleColor="@color/grey_50"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_rowWeight="1"
@@ -239,9 +237,12 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:background="@drawable/bg_category_item"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="0dp"
                     app:cardUseCompatPadding="false"
+                    app:rippleColor="@color/grey_50"
                     app:strokeColor="@color/grey_50"
                     app:strokeWidth="1dp">
 
@@ -270,9 +271,6 @@
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/catRestaurant"
-                    android:clickable="true"
-                    android:focusable="true"
-                    app:rippleColor="@color/grey_50"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_rowWeight="1"
@@ -280,9 +278,12 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:background="@drawable/bg_category_item"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="0dp"
                     app:cardUseCompatPadding="false"
+                    app:rippleColor="@color/grey_50"
                     app:strokeColor="@color/grey_50"
                     app:strokeWidth="1dp">
 
@@ -320,17 +321,31 @@
                 android:text="@string/place_recommendation"
                 android:textColor="@color/grey_900" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recommendedPlaceRecycler"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:clipToPadding="false"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:scrollbars="none"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:ignore="RtlSymmetry" />
+                android:layout_marginBottom="24dp">
+
+                <TextView
+                    android:id="@+id/recommendedLoadingText"
+                    style="@style/Theme.Deketin.TextRegular16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:text="@string/loading"
+                    android:textColor="@color/grey_700" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recommendedPlaceRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:scrollbars="none"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:ignore="RtlSymmetry" />
+            </FrameLayout>
 
             <!-- Terakhir Dikunjungi -->
             <RelativeLayout
@@ -347,6 +362,7 @@
                     android:textColor="@color/grey_900" />
 
                 <TextView
+                    android:id="@+id/visitHistoryMore"
                     style="@style/Theme.Deketin.TextMedium12"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -354,23 +370,36 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="16dp"
                     android:clickable="true"
+                    android:focusable="true"
                     android:text="@string/view_more"
-                    android:textColor="?attr/colorPrimary"
-                    android:focusable="true" />
+                    android:textColor="?attr/colorPrimary" />
             </RelativeLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/lastVisitedPlaceRecycler"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:clipToPadding="false"
-                android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:scrollbars="none"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:ignore="RtlSymmetry" />
+                android:layout_height="wrap_content">
 
+                <TextView
+                    android:id="@+id/historyLoadingText"
+                    style="@style/Theme.Deketin.TextRegular16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:text="@string/loading"
+                    android:textColor="@color/grey_700" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/lastVisitedPlaceRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:paddingStart="16dp"
+                    android:scrollbars="none"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:ignore="RtlSymmetry" />
+            </FrameLayout>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

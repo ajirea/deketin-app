@@ -19,4 +19,12 @@
     <string name="view_more">Lihat Semua</string>
     <string name="visit_history">Riwayat Kunjungan</string>
     <string name="search">Pencarian</string>
+    <string name="update">Perbarui</string>
+    <string name="search_result">Hasil Pencarian</string>
+    <string name="loading">Sedang memuat...</string>
+    <string name="failed_loading_data">Gagal memuat data.</string>
+    <string name="contact">Hubungi</string>
+    <string name="opening_hour">Jadwal Buka</string>
+    <string name="place_photo">Foto Tempat</string>
+    <string name="no_photos">Tidak ada foto</string>
 </resources>

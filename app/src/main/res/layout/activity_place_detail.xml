@@ -25,6 +25,7 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
             <ImageView
+                android:id="@+id/placePhoto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
@@ -64,16 +65,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="8dp"
-                android:text="Pernah dikunjungi"
-                android:textAppearance="@style/Theme.Deketin.TextRegular12"
-                android:textColor="@color/grey_800"
-                android:background="@drawable/bg_alert_success"
-                android:layout_marginHorizontal="16dp"/>
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:paddingHorizontal="12dp"-->
+<!--                android:paddingVertical="8dp"-->
+<!--                android:text="Pernah dikunjungi"-->
+<!--                android:textAppearance="@style/Theme.Deketin.TextRegular12"-->
+<!--                android:textColor="@color/grey_800"-->
+<!--                android:background="@drawable/bg_alert_success"-->
+<!--                android:layout_marginHorizontal="16dp"/>-->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -111,11 +112,11 @@
                         app:layout_constraintTop_toTopOf="@+id/icMapMarker" />
 
                     <TextView
-                        android:id="@+id/addressInfo"
+                        android:id="@+id/placeDistance"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="2km dari tempat anda"
+                        tools:text="2km dari tempat anda"
                         android:textAppearance="@style/Theme.Deketin.TextRegular12"
                         android:textColor="@color/grey_700"
                         app:layout_constraintStart_toStartOf="@+id/address"
@@ -125,11 +126,12 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnCall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Hubungi"
+                android:text="@string/contact"
                 android:elevation="0dp"
                 android:textColor="@color/white"
                 style="@style/Theme.Deketin.TextBold14"
@@ -137,13 +139,14 @@
                 android:background="@drawable/btn_primary"/>
 
             <TextView
+                android:id="@+id/titleJadwal"
                 style="@style/Theme.Deketin.TextBold16"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginBottom="16dp"
-                android:text="Jadwal Buka"
+                android:text="@string/opening_hour"
                 android:textColor="@color/grey_900" />
             
             <ListView
@@ -160,22 +163,35 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginBottom="16dp"
-                android:text="Foto Tempat"
+                android:text="@string/place_photo"
                 android:textColor="@color/grey_900" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/listPhotos"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:scrollbars="none"
-                android:paddingHorizontal="16dp"
-                android:clipToPadding="false"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/noPhoto"
+                    style="@style/Theme.Deketin.TextRegular16"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:text="@string/no_photos"
+                    android:textColor="@color/grey_700" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listPhotos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:scrollbars="none"
+                    android:paddingHorizontal="16dp"
+                    android:clipToPadding="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            </FrameLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnDirection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"

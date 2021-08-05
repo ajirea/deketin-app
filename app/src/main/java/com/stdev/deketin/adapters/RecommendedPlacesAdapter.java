@@ -1,7 +1,10 @@
 package com.stdev.deketin.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,7 @@ import com.squareup.picasso.Picasso;
 import com.stdev.deketin.PlaceDetailActivity;
 import com.stdev.deketin.R;
 import com.stdev.deketin.databinding.PlaceItemBinding;
+import com.stdev.deketin.models.PhotoModel;
 import com.stdev.deketin.models.PlaceModel;
 
 import java.util.List;
@@ -53,22 +57,39 @@ public class RecommendedPlacesAdapter extends RecyclerView.Adapter<RecommendedPl
         public RecommendedPlacesViewHolder(@NonNull View itemView) {
             super(itemView);
             binding = PlaceItemBinding.bind(itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(itemView.getContext(), PlaceDetailActivity.class);
-                    itemView.getContext().startActivity(intent);
-                }
-            });
         }
 
+        @SuppressLint("DefaultLocale")
         public void setItemData(PlaceModel data) {
             binding.placeName.setText(data.getPlaceName());
-            binding.placeDistance.setText(String.valueOf(data.getDistance()));
-            Picasso.get()
-                    .load(data.getThumbnail())
-                    .placeholder(R.drawable.bg_skeleton)
-                    .into(binding.thumbnail);
+            binding.placeDistance.setText(String.format("%.1fkm", data.getDistance()/1000));
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(binding.getRoot().getContext(), PlaceDetailActivity.class);
+                    intent.putExtra("place_id", data.getPlaceId());
+                    intent.putExtra("place_name", data.getPlaceName());
+
+                    if(data.getPhotos() != null) {
+                        PhotoModel photo = data.getPhotos()[0];
+                        intent.putExtra("place_photo_url", photo.getPhotoUrl());
+                    }
+
+                    binding.getRoot().getContext().startActivity(intent);
+                }
+            });
+
+            if (data.getPhotos() != null && data.getPhotos().length > 0) {
+                PhotoModel photo = data.getPhotos()[0];
+                photo.setMaxWidth(320);
+
+                Picasso.get()
+                        .load(photo.getPhotoUrl())
+                        .placeholder(R.drawable.bg_skeleton)
+                        .into(binding.thumbnail);
+            } else {
+                binding.thumbnail.setImageResource(R.drawable.bg_no_image);
+            }
         }
     }
 }

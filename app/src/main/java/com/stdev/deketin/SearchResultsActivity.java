@@ -3,8 +3,14 @@ package com.stdev.deketin;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.stdev.deketin.adapters.SearchResultsAdapter;
 import com.stdev.deketin.databinding.ActivitySearchResultsBinding;
@@ -21,6 +27,8 @@ public class SearchResultsActivity extends AppCompatActivity implements SearchRe
     private ActivitySearchResultsBinding binding;
     private SearchResultsPresenterImpl searchResultsPresenter;
     private SearchResultsAdapter searchResultsAdapter;
+    private String keyword;
+    private String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,11 +45,37 @@ public class SearchResultsActivity extends AppCompatActivity implements SearchRe
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        // get extras from previous intent
+        Bundle bundleExtras = getIntent().getExtras();
+        keyword = bundleExtras.getString("keyword");
+        type = bundleExtras.getString("type");
+
+        binding.searchField.setText(keyword);
+        binding.getRoot().clearChildFocus(binding.searchField); // remove autofocus after setText
+
         searchResultsPresenter = new SearchResultsPresenterImpl(this);
+        searchResultsPresenter.setContext(this);
 
         // recycler
         searchResultsAdapter = new SearchResultsAdapter(searchResults);
         binding.searchResultsRecycler.setAdapter(searchResultsAdapter);
+
+        binding.searchField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    if(v.getText().toString().trim().length() < 1) return false;
+                    if(v.getText().toString().trim().equals(keyword)) return false;
+
+                    keyword = v.getText().toString();
+                    type = null;
+                    searchResultsPresenter.load();
+                    binding.searchResultsRecycler.scrollToPosition(0);
+                    return true;
+                }
+                return false;
+            }
+        });
 
         searchResultsPresenter.load();
     }
@@ -56,6 +90,21 @@ public class SearchResultsActivity extends AppCompatActivity implements SearchRe
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public ActivitySearchResultsBinding getBinding() {
+        return binding;
+    }
+
+    @Override
+    public String getKeyword() {
+        return keyword;
+    }
+
+    @Override
+    public String getType() {
+        return type;
     }
 
     @Override

@@ -1,18 +1,37 @@
 package com.stdev.deketin.presenters;
 
+import android.app.AlertDialog;
+import android.util.Log;
+import android.view.View;
+
+import com.stdev.deketin.R;
+import com.stdev.deketin.api.ApiConfig;
+import com.stdev.deketin.api.MapApiEndpoint;
+import com.stdev.deketin.api.MapApiService;
+import com.stdev.deketin.models.NearbySearchResponseModel;
 import com.stdev.deketin.models.PlaceModel;
 import com.stdev.deketin.views.MainView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Predicate;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainViewPresenterImpl implements PlacePresenter {
-    private List<PlaceModel> recommendedPlaces = new ArrayList<>();
+    private final List<PlaceModel> recommendedPlaces = new ArrayList<>();
     private List<PlaceModel> lastVisitedPlaces = new ArrayList<>();
     private MainView view;
+    private MapApiService api;
+    private static final int RECOMMENDED_PLACE_RADIUS = 200; // meters
 
     public MainViewPresenterImpl(MainView view) {
         this.view = view;
+        api = MapApiEndpoint.getClient().create(MapApiService.class);
     }
 
     private void generateDummyData() {
@@ -63,11 +82,46 @@ public class MainViewPresenterImpl implements PlacePresenter {
         lastVisitedPlaces.add(place7);
     }
 
+    public void fetchRecommendedPlaces() {
+        Map<String, String> options = new HashMap<>();
+        options.put("radius", String.valueOf(RECOMMENDED_PLACE_RADIUS));
+        options.put("location", ApiConfig.DUMMY_LOCATION); // todo: change to gps coordinate
+        options.put("language", "id");
+
+        Call<NearbySearchResponseModel> call = api.getNearbySearch(options);
+        call.enqueue(new Callback<NearbySearchResponseModel>() {
+            @Override
+            public void onResponse(Call<NearbySearchResponseModel> call, Response<NearbySearchResponseModel> response) {
+                NearbySearchResponseModel body = response.body();
+
+                if(response.isSuccessful() && body != null) {
+                    if(body.getStatus().equals("OK")) {
+                        view.getBinding().recommendedLoadingText.setVisibility(View.GONE);
+                        recommendedPlaces.addAll(body.results);
+                        view.onLoadRecommendedPlaces(body.results);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<NearbySearchResponseModel> call, Throwable t) {
+                t.printStackTrace();
+
+                new AlertDialog.Builder(null)
+                        .setTitle("Kesalahan")
+                        .setMessage(t.getMessage())
+                        .show();
+
+                view.getBinding().recommendedLoadingText.setText(R.string.failed_loading_data);
+            }
+        });
+    }
+
     @Override
     public void load() {
-        recommendedPlaces.clear();
         lastVisitedPlaces.clear();
+        recommendedPlaces.clear();
         generateDummyData();
-        view.onLoad(recommendedPlaces, lastVisitedPlaces);
+        fetchRecommendedPlaces();
     }
 }

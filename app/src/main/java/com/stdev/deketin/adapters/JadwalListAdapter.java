@@ -15,9 +15,9 @@ import java.util.ArrayList;
 
 public class JadwalListAdapter extends BaseAdapter {
     private Context context;
-    private ArrayList<JadwalModel> jadwal;
+    private ArrayList<String> jadwal;
 
-    public JadwalListAdapter(Context context, ArrayList<JadwalModel> jadwal) {
+    public JadwalListAdapter(Context context, ArrayList<String> jadwal) {
         this.context = context;
         this.jadwal = jadwal;
     }
@@ -49,9 +49,16 @@ public class JadwalListAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        JadwalModel jadwal = this.jadwal.get(position);
-        viewHolder.getBinding().dayName.setText(jadwal.getDayName());
-        viewHolder.getBinding().jadwal.setText(jadwal.getJadwal());
+        String jadwal = this.jadwal.get(position);
+        String[] splitted = jadwal.split(" ");
+
+        if(splitted.length >= 2) {
+            viewHolder.getBinding().dayName.setText(splitted[0]);
+            viewHolder.getBinding().jadwal.setText(splitted[1]);
+        } else {
+            viewHolder.getBinding().dayName.setText("-");
+            viewHolder.getBinding().jadwal.setText("-");
+        }
 
         return convertView;
     }

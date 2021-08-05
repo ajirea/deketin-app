@@ -1,19 +1,107 @@
 package com.stdev.deketin.presenters;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.util.Log;
+import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.stdev.deketin.api.ApiConfig;
+import com.stdev.deketin.api.MapApiEndpoint;
+import com.stdev.deketin.api.MapApiService;
+import com.stdev.deketin.models.NearbySearchResponseModel;
 import com.stdev.deketin.models.PlaceModel;
 import com.stdev.deketin.views.MainView;
 import com.stdev.deketin.views.SearchResultsView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SearchResultsPresenterImpl implements PlacePresenter {
     private List<PlaceModel> places = new ArrayList<>();
     private List<PlaceModel> lastVisitedPlaces = new ArrayList<>();
     private SearchResultsView view;
+    private Context context;
+    private MapApiService api;
+    private boolean isLoading = true;
+
+    public static NearbySearchResponseModel body;
 
     public SearchResultsPresenterImpl(SearchResultsView view) {
         this.view = view;
+
+        api = MapApiEndpoint.getClient().create(MapApiService.class);
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    private void fetchData(@Nullable String nextPageToken) {
+        Map<String, String> options = new HashMap<>();
+        options.put("location", ApiConfig.DUMMY_LOCATION); // todo: change to gps coordinate
+        options.put("rankby", "distance");
+        options.put("language", "id");
+
+        if(view.getType() != null) {
+            options.put("type", view.getType());
+        }
+
+        if(view.getKeyword() != null) {
+            options.put("keyword", view.getKeyword());
+        }
+
+        if (nextPageToken != null) {
+            options.put("pagetoken", nextPageToken);
+        }
+
+        Call<NearbySearchResponseModel> call = api.getNearbySearch(options);
+        call.enqueue(new Callback<NearbySearchResponseModel>() {
+            @Override
+            public void onResponse(Call<NearbySearchResponseModel> call, Response<NearbySearchResponseModel> response) {
+                body = response.body();
+                if (body.getStatus().equals("OK")) {
+                    setLoadingState(false);
+
+                    // add results to places list
+                    places.addAll(body.results);
+                    view.onLoad(places);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<NearbySearchResponseModel> call, Throwable t) {
+                t.printStackTrace();
+                setLoadingState(false);
+
+                if (context != null) {
+                    new AlertDialog.Builder(context)
+                            .setTitle("Kesalahan")
+                            .setMessage(t.getMessage())
+                            .show();
+                }
+            }
+        });
+    }
+
+
+    private void setLoadingState(boolean state) {
+        if (state) {
+            view.getBinding().progressIndicator.setVisibility(View.VISIBLE);
+        } else {
+            view.getBinding().progressIndicator.setVisibility(View.GONE);
+        }
+        isLoading = state;
     }
 
     private void generateDummyData() {
@@ -68,7 +156,20 @@ public class SearchResultsPresenterImpl implements PlacePresenter {
     @Override
     public void load() {
         places.clear();
-        generateDummyData();
-        view.onLoad(places);
+        fetchData(null);
+
+        view.getBinding().searchResultsRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+                if (!isLoading && body.getNextPageToken() != null) {
+                    if (layoutManager != null && layoutManager
+                            .findLastCompletelyVisibleItemPosition() == places.size() - 1) {
+                        fetchData(body.getNextPageToken());
+                    }
+                }
+            }
+        });
     }
 }
