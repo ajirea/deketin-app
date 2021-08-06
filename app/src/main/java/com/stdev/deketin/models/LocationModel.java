@@ -1,5 +1,7 @@
 package com.stdev.deketin.models;
 
+import androidx.annotation.NonNull;
+
 public class LocationModel {
     private double lat;
     private double lng;
@@ -18,5 +20,11 @@ public class LocationModel {
 
     public void setLng(double lng) {
         this.lng = lng;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format("%s,%s", String.valueOf(lat), String.valueOf(lng));
     }
 }

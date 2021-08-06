@@ -3,6 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/white">
 
@@ -27,14 +28,16 @@
         android:padding="24dp">
 
         <TextView
+            android:id="@+id/address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Kp. Selakopi, RT 02/011, Ds. Cijengkol, Kec. Caringin, Kab. Sukabumi"
+            tools:text="Kp. Selakopi, RT 02/011, Ds. Cijengkol, Kec. Caringin, Kab. Sukabumi"
             android:textColor="@color/grey_700"
             android:lineSpacingExtra="5dp"
             style="@style/Theme.Deketin.TextRegular16"/>
 
         <com.google.android.material.card.MaterialCardView
+            android:id="@+id/btnUpdateLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.AppCompat.Button"
@@ -42,6 +45,8 @@
             app:cardBackgroundColor="?attr/colorPrimary"
             app:cardCornerRadius="8dp"
             app:cardElevation="0dp"
+            android:clickable="true"
+            android:focusable="true"
             android:stateListAnimator="@null"
             app:cardUseCompatPadding="false"
             app:rippleColor="@color/grey_50">

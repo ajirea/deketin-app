@@ -102,8 +102,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:letterSpacing="0.01"
-                        android:maxLines="2"
-                        android:ellipsize="end"
                         android:text="Sukabumi, Jawa Barat"
                         android:textColor="@color/grey_700"
                         android:textAppearance="@style/Theme.Deketin.TextMedium14"

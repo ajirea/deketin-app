@@ -3,8 +3,8 @@
     package="com.stdev.deketin">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:icon="@mipmap/ic_launcher"
@@ -12,12 +12,23 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.Deketin">
+        <activity android:name=".WalkthroughActivity"></activity>
+        <activity android:name=".SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-
-
-        <activity android:name=".VisitHistoryActivity" android:screenOrientation="portrait" />
-        <activity android:name=".PlaceDetailActivity" android:screenOrientation="portrait" />
-        <activity android:name=".SearchResultsActivity" android:screenOrientation="portrait" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".VisitHistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PlaceDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SearchResultsActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">

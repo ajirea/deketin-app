@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.collection.ArrayMap;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -21,11 +23,16 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.stdev.deketin.adapters.LastVisitedPlacesAdapter;
 import com.stdev.deketin.adapters.RecommendedPlacesAdapter;
+import com.stdev.deketin.database.AppDatabase;
 import com.stdev.deketin.databinding.ActivityMainBinding;
 import com.stdev.deketin.dialogs.CategoryBottomSheetDialog;
 import com.stdev.deketin.dialogs.UpdateLocationDialog;
+import com.stdev.deketin.models.LocationModel;
 import com.stdev.deketin.models.PlaceModel;
+import com.stdev.deketin.models.PlaceVisitHistoryModel;
 import com.stdev.deketin.presenters.MainViewPresenterImpl;
+import com.stdev.deketin.utils.Preferences;
+import com.stdev.deketin.utils.UserLocation;
 import com.stdev.deketin.views.MainView;
 
 import java.io.IOException;
@@ -37,16 +44,16 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity implements MainView {
 
     private final int REQUEST_LOCATION_PERMISSION = 1;
-    private final int REQUEST_INTERNET_PERMISSION = 2;
 
     private final List<PlaceModel> recommendedPlaces = new ArrayList<>();
-    private final List<PlaceModel> lastVisitedPlaces = new ArrayList<>();
+    private final List<PlaceVisitHistoryModel> lastVisitedPlaces = new ArrayList<>();
     private static MainViewPresenterImpl mainViewPresenter;
     private RecommendedPlacesAdapter recommendedPlacesAdapter;
     private LastVisitedPlacesAdapter lastVisitedPlacesAdapter;
     private ActivityMainBinding binding;
     private UpdateLocationDialog updateLocationDialog;
     private Location mLastLocation;
+    private AppDatabase db;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -58,8 +65,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
         View view = binding.getRoot();
         setContentView(view);
 
-        // init presenter
-        mainViewPresenter = new MainViewPresenterImpl(this);
+        requestPermission();
+
+        // init
+        db = AppDatabase.getDatabase(this);
+        mainViewPresenter = new MainViewPresenterImpl(this, db.visitHistoryDao());
 
         // recycler
         recommendedPlacesAdapter = new RecommendedPlacesAdapter(recommendedPlaces);
@@ -90,47 +100,70 @@ public class MainActivity extends AppCompatActivity implements MainView {
             }
         });
 
-        requestPermission();
+        binding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mainViewPresenter.load();
+                binding.swipeRefresh.setRefreshing(false);
+            }
+        });
+    }
 
-        FusedLocationProviderClient flpClient = LocationServices.getFusedLocationProviderClient(this);
-
-        if (!checkIfNotPermitted(Manifest.permission.ACCESS_FINE_LOCATION) && !checkIfNotPermitted(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-            flpClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(Location location) {
-                    if(location != null) {
-                        mLastLocation = location;
-                        Locale locale = new Locale("id", "ID");
-                        Geocoder geocoder = new Geocoder(MainActivity.this, locale);
-                        try {
-                            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                            Log.d("addressnow", addresses.get(0).getLocality() + ", " + addresses.get(0).getSubAdminArea());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
-        }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
         mainViewPresenter.load();
+    }
+
+    private void requestPermission() {
+        if (ContextCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_FINE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                this, Manifest.permission.ACCESS_COARSE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+            }, REQUEST_LOCATION_PERMISSION);
+        } else {
+            getLastKnownLocation();
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getLastKnownLocation() {
+        UserLocation.getLastKnownLocation(this, new OnSuccessListener<Address>() {
+            @Override
+            public void onSuccess(Address address) {
+                binding.address
+                        .setText(Preferences.getCurrentAddress(MainActivity.this, true));
+
+                // load the data after current location identified
+                mainViewPresenter.load();
+            }
+        });
     }
 
     @Override
     public void onLoadRecommendedPlaces(List<PlaceModel> recommendedPlaces) {
         this.recommendedPlaces.clear();
-        for(PlaceModel place : recommendedPlaces) {
-            Log.d("prerec", place.getPlaceName());
-        }
         this.recommendedPlaces.addAll(recommendedPlaces);
         recommendedPlacesAdapter.notifyDataSetChanged();
+
+        if(this.recommendedPlaces.size() < 1) {
+            binding.recommendedLoadingText.setText(R.string.no_place);
+        }
     }
 
     @Override
-    public void onLoadLastVisitedPlaces(List<PlaceModel> lastVisitedPlaces) {
+    public void onLoadLastVisitedPlaces(List<PlaceVisitHistoryModel> lastVisitedPlaces) {
         this.lastVisitedPlaces.clear();
         this.lastVisitedPlaces.addAll(lastVisitedPlaces);
         lastVisitedPlacesAdapter.notifyDataSetChanged();
+
+        if(this.lastVisitedPlaces.size() < 1) {
+            binding.historyLoadingText.setText(R.string.no_place);
+        }
     }
 
     @Override
@@ -138,32 +171,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
-            //
-        }
-    }
-
-    private void requestPermission() {
-
-        // permission, request code
-        ArrayMap<String, Integer> permissions = new ArrayMap<>();
-
-        permissions.put(Manifest.permission.ACCESS_FINE_LOCATION, REQUEST_LOCATION_PERMISSION);
-        permissions.put(Manifest.permission.INTERNET, REQUEST_INTERNET_PERMISSION);
-        permissions.put(Manifest.permission.ACCESS_COARSE_LOCATION, REQUEST_LOCATION_PERMISSION);
-
-        for (Map.Entry<String, Integer> entry : permissions.entrySet()) {
-            if (checkIfNotPermitted(entry.getKey())) {
-                ActivityCompat.requestPermissions(this, new String[]{entry.getKey()}, entry.getValue());
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getLastKnownLocation();
             } else {
-                Log.d("permissionsresults", "permissions granted");
+                requestPermission();
             }
         }
-
-
-    }
-
-    private boolean checkIfNotPermitted(String permission) {
-        return ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
@@ -196,13 +209,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
         public void onClick(View v) {
             Intent intent = new Intent(MainActivity.this, SearchResultsActivity.class);
 
-            if(v.getId() == R.id.catHospital) {
+            if (v.getId() == R.id.catHospital) {
                 intent.putExtra("keyword", "Rumah Sakit");
                 intent.putExtra("type", "hospital");
-            } else if(v.getId() == R.id.catSchool) {
+            } else if (v.getId() == R.id.catSchool) {
                 intent.putExtra("keyword", "Sekolah");
                 intent.putExtra("type", "school");
-            } else if(v.getId() == R.id.catRestaurant) {
+            } else if (v.getId() == R.id.catRestaurant) {
                 intent.putExtra("keyword", "Restoran");
                 intent.putExtra("type", "restaurant");
             }

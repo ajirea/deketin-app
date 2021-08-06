@@ -31,23 +31,17 @@
         android:hint="@string/search"
         android:padding="16dp" />
 
-    <FrameLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/progressIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:indeterminate="true"/>
+        android:layout_height="match_parent"
+        app:swipeRefreshLayoutProgressSpinnerBackgroundColor="?attr/colorPrimary">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/searchResultsRecycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"
-            android:paddingHorizontal="16dp"
-            android:paddingBottom="16dp"
+            android:padding="16dp"
             android:layout_gravity="center"
             android:clipToPadding="false"
             android:clipChildren="true"
@@ -56,5 +50,32 @@
             app:spanCount="2"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             />
-    </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+<!--    <FrameLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1">-->
+<!--        <com.google.android.material.progressindicator.CircularProgressIndicator-->
+<!--            android:id="@+id/progressIndicator"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:indeterminate="true"/>-->
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/searchResultsRecycler"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:paddingHorizontal="16dp"-->
+<!--            android:paddingBottom="16dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:clipToPadding="false"-->
+<!--            android:clipChildren="true"-->
+<!--            android:scrollbars="vertical"-->
+<!--            android:scrollbarStyle="outsideOverlay"-->
+<!--            app:spanCount="2"-->
+<!--            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"-->
+<!--            />-->
+<!--    </FrameLayout>-->
 </LinearLayout>

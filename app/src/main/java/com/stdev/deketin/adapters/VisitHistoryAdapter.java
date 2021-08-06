@@ -1,5 +1,7 @@
 package com.stdev.deketin.adapters;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,17 +10,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
+import com.stdev.deketin.PlaceDetailActivity;
 import com.stdev.deketin.R;
 import com.stdev.deketin.databinding.HorizontalPlaceItemBinding;
 import com.stdev.deketin.databinding.PlaceItemBinding;
+import com.stdev.deketin.models.PhotoModel;
 import com.stdev.deketin.models.PlaceModel;
+import com.stdev.deketin.models.PlaceVisitHistoryModel;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class VisitHistoryAdapter extends RecyclerView.Adapter<VisitHistoryAdapter.ViewHolder> {
-    private final List<PlaceModel> places;
+    private final List<PlaceVisitHistoryModel> places;
 
-    public VisitHistoryAdapter(List<PlaceModel> places) {
+    public VisitHistoryAdapter(List<PlaceVisitHistoryModel> places) {
         this.places = places;
     }
 
@@ -53,14 +59,30 @@ public class VisitHistoryAdapter extends RecyclerView.Adapter<VisitHistoryAdapte
             binding = HorizontalPlaceItemBinding.bind(itemView);
         }
 
-        public void setItemData(PlaceModel data) {
+        @SuppressLint("SimpleDateFormat")
+        public void setItemData(PlaceVisitHistoryModel data) {
             binding.placeName.setText(data.getPlaceName());
-            binding.address.setText(data.getAddress());
-            binding.date.setText(data.getDate());
+            binding.address.setText(data.getFormattedAddress());
+            binding.date.setText(new SimpleDateFormat("dd MMMM yyyy").format(data.getCreatedAt()));
             Picasso.get()
-                    .load(data.getThumbnail())
+                    .load(data.getPhotoUrl())
                     .placeholder(R.drawable.bg_skeleton)
                     .into(binding.thumbnail);
+
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(binding.getRoot().getContext(), PlaceDetailActivity.class);
+                    intent.putExtra("place_id", data.getPlaceId());
+                    intent.putExtra("place_name", data.getPlaceName());
+
+                    if(data.getPhotoUrl() != null) {
+                        intent.putExtra("place_photo_url", data.getPhotoUrl());
+                    }
+
+                    binding.getRoot().getContext().startActivity(intent);
+                }
+            });
         }
     }
 }

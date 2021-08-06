@@ -27,4 +27,7 @@
     <string name="opening_hour">Jadwal Buka</string>
     <string name="place_photo">Foto Tempat</string>
     <string name="no_photos">Tidak ada foto</string>
+    <string name="finding_location">Mencari lokasi...</string>
+    <string name="skip">Lewati</string>
+    <string name="no_place">Belum ada tempat</string>
 </resources>

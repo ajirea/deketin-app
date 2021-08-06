@@ -1,6 +1,7 @@
 package com.stdev.deketin.adapters;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
+import com.stdev.deketin.PlaceDetailActivity;
 import com.stdev.deketin.R;
 import com.stdev.deketin.databinding.PlaceItemBinding;
 import com.stdev.deketin.models.PhotoModel;
@@ -71,6 +73,22 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<SearchResultsAdap
         public void setItemData(PlaceModel data) {
             binding.placeName.setText(data.getPlaceName());
             binding.placeDistance.setText(String.format("%.1fkm", data.getDistance()/1000));
+
+            binding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(binding.getRoot().getContext(), PlaceDetailActivity.class);
+                    intent.putExtra("place_id", data.getPlaceId());
+                    intent.putExtra("place_name", data.getPlaceName());
+
+                    if(data.getPhotos() != null) {
+                        PhotoModel photo = data.getPhotos()[0];
+                        intent.putExtra("place_photo_url", photo.getPhotoUrl());
+                    }
+
+                    binding.getRoot().getContext().startActivity(intent);
+                }
+            });
 
             if (data.getPhotos() != null && data.getPhotos().length > 0) {
                 PhotoModel photo = data.getPhotos()[0];

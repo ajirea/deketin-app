@@ -39,6 +39,10 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="Theme.Deketin.TextBold24" parent="Theme.Deketin.FontBold">
+        <item name="android:textSize">24sp</item>
+    </style>
+
     <style name="Theme.Deketin.TextMedium10" parent="Theme.Deketin.FontMedium">
         <item name="android:textSize">10sp</item>
     </style>

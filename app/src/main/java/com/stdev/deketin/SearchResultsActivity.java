@@ -1,11 +1,14 @@
 package com.stdev.deketin;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -14,6 +17,7 @@ import android.widget.Toast;
 
 import com.stdev.deketin.adapters.SearchResultsAdapter;
 import com.stdev.deketin.databinding.ActivitySearchResultsBinding;
+import com.stdev.deketin.dialogs.UpdateLocationDialog;
 import com.stdev.deketin.models.PlaceModel;
 import com.stdev.deketin.presenters.SearchResultsPresenterImpl;
 import com.stdev.deketin.views.SearchResultsView;
@@ -27,6 +31,7 @@ public class SearchResultsActivity extends AppCompatActivity implements SearchRe
     private ActivitySearchResultsBinding binding;
     private SearchResultsPresenterImpl searchResultsPresenter;
     private SearchResultsAdapter searchResultsAdapter;
+    private UpdateLocationDialog updateLocationDialog;
     private String keyword;
     private String type;
 
@@ -53,8 +58,19 @@ public class SearchResultsActivity extends AppCompatActivity implements SearchRe
         binding.searchField.setText(keyword);
         binding.getRoot().clearChildFocus(binding.searchField); // remove autofocus after setText
 
+        updateLocationDialog = new UpdateLocationDialog(this);
+
         searchResultsPresenter = new SearchResultsPresenterImpl(this);
         searchResultsPresenter.setContext(this);
+
+        // show loading
+        binding.swipeRefresh.setRefreshing(true);
+        binding.swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                searchResultsPresenter.load();
+            }
+        });
 
         // recycler
         searchResultsAdapter = new SearchResultsAdapter(searchResults);
@@ -93,6 +109,15 @@ public class SearchResultsActivity extends AppCompatActivity implements SearchRe
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.menuLocation) {
+            updateLocationDialog.show();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public ActivitySearchResultsBinding getBinding() {
         return binding;
     }
@@ -112,5 +137,6 @@ public class SearchResultsActivity extends AppCompatActivity implements SearchRe
         searchResults.clear();
         searchResults.addAll(places);
         searchResultsAdapter.notifyDataSetChanged();
+        binding.swipeRefresh.setRefreshing(false);
     }
 }

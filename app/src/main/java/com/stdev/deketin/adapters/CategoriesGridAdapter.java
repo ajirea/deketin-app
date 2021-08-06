@@ -28,7 +28,7 @@ public class CategoriesGridAdapter extends BaseAdapter {
 
         menuText = new String[]{"Akuntan", "ATM", "Balai Kota", "Bengkel Mobil", "Bandara", "Tempat Camping",
                 "Dealer Mobil", "Galeri Seni", "Gereja", "Hotel", "Kafe", "Masjid", "Polisi", "Pemakaman", "Rental Mobil",
-                "Restoran", "Rumah Sakit", "Salon", "Sekolah", "Steam Mobil", "Taman Hiburan", "Terminal Bus", "Toko Buku", "Warung"};
+                "Restoran", "Rumah Sakit", "Salon", "Sekolah", "Steam Mobil", "Taman Hiburan", "Terminal", "Toko Buku", "Warung"};
 
         types = new String[]{
                 "accounting", "atm", "city_hall", "car_repair", "airport", "campground",

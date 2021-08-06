@@ -1,5 +1,8 @@
 package com.stdev.deketin.presenters;
 
+import com.stdev.deketin.VisitHistoryActivity;
+import com.stdev.deketin.database.AppDatabase;
+import com.stdev.deketin.database.dao.VisitHistoryDao;
 import com.stdev.deketin.models.PlaceModel;
 import com.stdev.deketin.views.SearchResultsView;
 import com.stdev.deketin.views.VisitHistoryView;
@@ -11,9 +14,11 @@ public class VisitHistoryPresenterImpl implements PlacePresenter {
     private List<PlaceModel> places = new ArrayList<>();
     private List<PlaceModel> visitedPlaces = new ArrayList<>();
     private VisitHistoryView view;
+    private VisitHistoryDao dao;
 
-    public VisitHistoryPresenterImpl(VisitHistoryView view) {
+    public VisitHistoryPresenterImpl(VisitHistoryView view, VisitHistoryDao dao) {
         this.view = view;
+        this.dao = dao;
     }
 
     private void generateDummyData() {
@@ -41,6 +46,6 @@ public class VisitHistoryPresenterImpl implements PlacePresenter {
     public void load() {
         places.clear();
         generateDummyData();
-        view.onLoad(places);
+        view.onLoad(dao.getAll());
     }
 }

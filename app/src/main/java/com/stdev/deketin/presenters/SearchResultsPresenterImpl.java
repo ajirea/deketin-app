@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.stdev.deketin.api.ApiConfig;
 import com.stdev.deketin.api.MapApiEndpoint;
 import com.stdev.deketin.api.MapApiService;
+import com.stdev.deketin.models.LocationModel;
 import com.stdev.deketin.models.NearbySearchResponseModel;
 import com.stdev.deketin.models.PlaceModel;
+import com.stdev.deketin.utils.Preferences;
 import com.stdev.deketin.views.MainView;
 import com.stdev.deketin.views.SearchResultsView;
 
@@ -41,6 +43,22 @@ public class SearchResultsPresenterImpl implements PlacePresenter {
         this.view = view;
 
         api = MapApiEndpoint.getClient().create(MapApiService.class);
+
+        view.getBinding().searchResultsRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(body == null) return;
+
+                GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+                if (!isLoading && body.getNextPageToken() != null) {
+                    if (layoutManager != null && layoutManager
+                            .findLastCompletelyVisibleItemPosition() == places.size() - 1) {
+                        fetchData(body.getNextPageToken());
+                    }
+                }
+            }
+        });
     }
 
     public void setContext(Context context) {
@@ -49,7 +67,9 @@ public class SearchResultsPresenterImpl implements PlacePresenter {
 
     private void fetchData(@Nullable String nextPageToken) {
         Map<String, String> options = new HashMap<>();
-        options.put("location", ApiConfig.DUMMY_LOCATION); // todo: change to gps coordinate
+        LocationModel currentLocation = Preferences.getCurrentLocation(view.getBinding().getRoot().getContext());
+
+        options.put("location", currentLocation.toString());
         options.put("rankby", "distance");
         options.put("language", "id");
 
@@ -97,9 +117,9 @@ public class SearchResultsPresenterImpl implements PlacePresenter {
 
     private void setLoadingState(boolean state) {
         if (state) {
-            view.getBinding().progressIndicator.setVisibility(View.VISIBLE);
+            view.getBinding().swipeRefresh.setRefreshing(true);
         } else {
-            view.getBinding().progressIndicator.setVisibility(View.GONE);
+            view.getBinding().swipeRefresh.setRefreshing(false);
         }
         isLoading = state;
     }
@@ -157,19 +177,5 @@ public class SearchResultsPresenterImpl implements PlacePresenter {
     public void load() {
         places.clear();
         fetchData(null);
-
-        view.getBinding().searchResultsRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
-                if (!isLoading && body.getNextPageToken() != null) {
-                    if (layoutManager != null && layoutManager
-                            .findLastCompletelyVisibleItemPosition() == places.size() - 1) {
-                        fetchData(body.getNextPageToken());
-                    }
-                }
-            }
-        });
     }
 }
