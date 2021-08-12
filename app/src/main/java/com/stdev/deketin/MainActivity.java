@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private LastVisitedPlacesAdapter lastVisitedPlacesAdapter;
     private ActivityMainBinding binding;
     private UpdateLocationDialog updateLocationDialog;
-    private Location mLastLocation;
     private AppDatabase db;
 
     @SuppressLint("MissingPermission")
@@ -76,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
         lastVisitedPlacesAdapter = new LastVisitedPlacesAdapter(lastVisitedPlaces);
         binding.recommendedPlaceRecycler.setAdapter(recommendedPlacesAdapter);
         binding.lastVisitedPlaceRecycler.setAdapter(lastVisitedPlacesAdapter);
-
 
         // event for showing bottom sheet category
         binding.searchNearestPlace.setOnClickListener(showBottomSheet);
