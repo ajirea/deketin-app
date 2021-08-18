@@ -17,6 +17,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -54,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private UpdateLocationDialog updateLocationDialog;
     private AppDatabase db;
 
-    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,8 +128,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
         }
     }
 
-    @SuppressLint("MissingPermission")
     private void getLastKnownLocation() {
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "GPS tidak diizinkan.", Toast.LENGTH_LONG).show();
+            this.finishAffinity();
+            return;
+        }
+
         UserLocation.getLastKnownLocation(this, new OnSuccessListener<Address>() {
             @Override
             public void onSuccess(Address address) {

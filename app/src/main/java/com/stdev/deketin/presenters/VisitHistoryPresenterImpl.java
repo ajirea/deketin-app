@@ -10,7 +10,7 @@ import com.stdev.deketin.views.VisitHistoryView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VisitHistoryPresenterImpl implements PlacePresenter {
+public class VisitHistoryPresenterImpl implements VisitHistoryPresenter {
     private List<PlaceModel> places = new ArrayList<>();
     private List<PlaceModel> visitedPlaces = new ArrayList<>();
     private VisitHistoryView view;

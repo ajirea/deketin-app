@@ -62,7 +62,7 @@ public class RecommendedPlacesAdapter extends RecyclerView.Adapter<RecommendedPl
         @SuppressLint("DefaultLocale")
         public void setItemData(PlaceModel data) {
             binding.placeName.setText(data.getPlaceName());
-            binding.placeDistance.setText(String.format("%.1fkm", data.getDistance()/1000));
+            binding.placeDistance.setText(String.format("%.1fkm", data.getDistance(itemView.getContext())/1000));
             binding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

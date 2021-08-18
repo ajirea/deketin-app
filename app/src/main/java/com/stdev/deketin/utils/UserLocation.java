@@ -1,7 +1,9 @@
 package com.stdev.deketin.utils;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -9,6 +11,7 @@ import android.os.Looper;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -40,6 +43,7 @@ public class UserLocation {
     public static void getLastKnownLocation(Context context, @Nullable OnSuccessListener<Address> address) {
         initLocationRequest();
         FusedLocationProviderClient flpClient = LocationServices.getFusedLocationProviderClient(context);
+
         flpClient.requestLocationUpdates(locationRequest, new LocationCallback() {
             @Override
             public void onLocationResult(@NonNull LocationResult locationResult) {
@@ -60,7 +64,7 @@ public class UserLocation {
 
                     Preferences.setCurrentLocationPreferences(context, locModel, firstAddress);
 
-                    if(address != null)  address.onSuccess(firstAddress);
+                    if (address != null) address.onSuccess(firstAddress);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

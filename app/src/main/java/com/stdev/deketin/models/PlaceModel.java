@@ -1,11 +1,13 @@
 package com.stdev.deketin.models;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.annotations.SerializedName;
 import com.google.maps.android.SphericalUtil;
 import com.stdev.deketin.api.ApiConfig;
+import com.stdev.deketin.utils.Preferences;
 
 public class PlaceModel {
 
@@ -53,12 +55,14 @@ public class PlaceModel {
         this.placeName = placeName;
     }
 
-    public double getDistance() {
+    public double getDistance(Context context) {
         if(geometry == null) return 0D;
+
+        LocationModel currentLocation = Preferences.getCurrentLocation(context);
 
         String[] dummyLocation = ApiConfig.DUMMY_LOCATION.split(",");
         // set dummy location
-        LatLng current = new LatLng(Double.parseDouble(dummyLocation[0]), Double.parseDouble(dummyLocation[1]));
+        LatLng current = new LatLng(currentLocation.getLat(), currentLocation.getLng());
 
         LatLng destination = new LatLng(geometry.getLocation().getLat(), geometry.getLocation().getLng());
 

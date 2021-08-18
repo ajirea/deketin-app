@@ -34,7 +34,7 @@ public class PlaceDetailPresenterImpl implements PlacePresenter {
         options.put("language", "id");
         options.put("region", ".id");
         options.put("fields", "name,place_id,photos,vicinity,geometry,formatted_address,formatted_phone_number,url,business_status,opening_hours");
-        Log.d("detplace", String.valueOf(view.getPlaceId()));
+        //Log.d("detplace", String.valueOf(view.getPlaceId()));
         Call<PlaceResponseModel> call = api.getPlaceDetail(view.getPlaceId(), options);
 
         call.enqueue(new Callback<PlaceResponseModel>() {

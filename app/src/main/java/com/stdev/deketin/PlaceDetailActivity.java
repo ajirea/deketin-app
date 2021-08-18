@@ -213,7 +213,7 @@ public class PlaceDetailActivity extends AppCompatActivity implements PlaceDetai
 
         binding.address.setText(place.getFormattedAddress());
         binding.placeDistance.setText(
-                String.format("%.1fkm dari tempat anda", place.getDistance() / 1000)
+                String.format("%.1fkm dari tempat anda", place.getDistance(this) / 1000)
         );
     }
 
